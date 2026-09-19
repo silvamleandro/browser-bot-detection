@@ -1,0 +1,21 @@
+node_modules/
+.wrangler/
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+
+# Raw sessions carry behavioural traces from consenting participants, and the
+# full set is large. data/sample/ holds one automated session per configuration
+# so the pipeline can be run from a fresh clone.
+data/raw/*.jsonl
+data/features/*.csv
+
+# Case brief, not mine to publish.
+Incognia___Technical_Case_-_Data_Science_-_2026.pdf
+
+# Quarantined dataset: kept locally as the record behind data/quarantine/README.md,
+# too large to be worth versioning.
+data/quarantine/pre-2026-09-15-harness-fix.jsonl
+data/quarantine/headful-real-pointer.jsonl
