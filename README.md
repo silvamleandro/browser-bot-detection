@@ -15,7 +15,7 @@ adaptativo: *quanto sinal sobra quando o atacante apaga os rastros óbvios?*
 - **259 sinais em quatro camadas**, por custo de evasão: artefatos de automação e
   adulteração de API (`a_`), coerência de ambiente (`e_`), cadência de runtime
   (`t_`) e comportamento (`b_`), que cobre ponteiro, digitação e rolagem.
-- **Motor de regras próprio** (`web/src/baseline.js`, 42 regras) produz os reason
+- **Motor de regras próprio** (`web/src/baseline.js`, 37 regras) produz os reason
   codes e faz a classificação inicial. O score parte de um viés
   heurístico, 0,17 sem evidência, e evidência de "parece humano" só cancela suspeita
   comportamental, nunca apaga adulteração detectada.

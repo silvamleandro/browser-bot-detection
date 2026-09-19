@@ -63,7 +63,7 @@ Motor de regras avaliado separadamente, nas sessões completas e no seu limiar d
 | bot | pw-chromium-headless-evasion | humanized | 6 | 1.0 | 0.9947 | 0.9947 |
 | bot | pw-chromium-headless-evasion | idle | 6 | 1.0 | 0.9947 | 0.9947 |
 | bot | pw-chromium-headless-evasion | naive | 6 | 1.0 | 0.9996 | 0.9996 |
-| bot | pw-chromium-shell | humanized | 6 | 1.0 | 0.9916 | 0.9895 |
+| bot | pw-chromium-shell | humanized | 6 | 1.0 | 0.9952 | 0.9933 |
 | bot | pw-chromium-shell | idle | 6 | 1.0 | 0.9895 | 0.9895 |
 | bot | pw-chromium-shell | naive | 6 | 1.0 | 0.9993 | 0.9993 |
 | bot | pw-firefox-headful | humanized | 6 | 1.0 | 0.95 | 0.95 |
@@ -180,18 +180,15 @@ Mediana de 20 divisões treino/teste por participante, com a faixa entre parênt
 
 ## Auditoria do Motor de Regras
 
-Taxa de disparo de cada uma das 42 regras, por classe, nas sessões completas. Peso positivo acusa automação, negativo defende o visitante; `aponta` compara o sinal da separação com o sinal do peso.
+Taxa de disparo de cada uma das 37 regras, por classe, nas sessões completas. Peso positivo acusa automação, negativo defende o visitante; `aponta` compara o sinal da separação com o sinal do peso.
 
 19 regras não disparam em nenhuma sessão deste conjunto: são cobertura para adversários que a matriz não gera, e não contribuem com a detecção medida aqui.
-
-5 apontam para o lado errado nestes dados (`human_reversals`, `human_wheel`, `human_typing_rhythm`, `path_too_straight`, `no_reversals`). O viés heurístico absorve o efeito no veredito, mas o texto que a página mostra para essas regras descreve o contrário do que os dados dizem.
 
 | regra | camada | grupo | peso | em humanos | em bots | separação | aponta |
 |---|---|---|---|---|---|---|---|
 | webdriver | A | hard | 4.0 | 0.0 | 0.5056 | 0.5056 | certo |
 | click_without_approach | D | behaviour | 2.0 | 0.0 | 0.3389 | 0.3389 | certo |
 | scroll_programmatic | D | behaviour | 1.5 | 0.0 | 0.3389 | 0.3389 | certo |
-| human_reversals | D | behaviour | -1.5 | 0.0 | 0.3222 | 0.3222 | invertida |
 | ua_headless | A | hard | 3.5 | 0.0 | 0.3056 | 0.3056 | certo |
 | utc_no_dst | B | env | 0.5 | 0.0 | 0.2611 | 0.2611 | certo |
 | programmatic_fill | D | behaviour | 2.5 | 0.0323 | 0.2722 | 0.24 | certo |
@@ -201,34 +198,30 @@ Taxa de disparo de cada uma das 42 regras, por classe, nas sessões completas. P
 | natives_patched | A | tamper | 2.0 | 0.0 | 0.2 | 0.2 | certo |
 | no_window_chrome | B | env | 1.5 | 0.129 | 0.3111 | 0.1821 | certo |
 | software_gpu | B | env | 1.5 | 0.129 | 0.3056 | 0.1765 | certo |
-| human_wheel | D | behaviour | -1.0 | 0.1613 | 0.3333 | 0.172 | invertida |
 | perm_mismatch | B | env | 1.5 | 0.0 | 0.1 | 0.1 | certo |
 | chrome_stub | A | tamper | 1.5 | 0.0 | 0.1 | 0.1 | certo |
-| human_typing_rhythm | D | behaviour | -1.0 | 0.129 | 0.1667 | 0.0376 | invertida |
 | screen_client_eq | D | behaviour | 3.0 | 0.0 | 0.0333 | 0.0333 | certo |
-| exposed_binding | A | hard | 4.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
-| doc_keys | A | hard | 4.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
 | globals | A | hard | 4.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| doc_keys | A | hard | 4.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| exposed_binding | A | hard | 4.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| cdp | A | env | 1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| no_media_stack | B | env | 0.75 | 0.0 | 0.0 | 0.0 | nunca dispara |
 | pointer_none | B | env | 1.5 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| no_raf | C | timing | 2.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| ua_incoherent | B | env | 2.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
 | few_fonts | B | env | 1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
 | chromium_codecs | B | env | 1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
-| no_media_stack | B | env | 0.75 | 0.0 | 0.0 | 0.0 | nunca dispara |
-| cdp | A | env | 1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
 | typed_too_fast | D | behaviour | 2.5 | 0.0 | 0.0 | 0.0 | nunca dispara |
-| ua_incoherent | B | env | 2.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
-| no_raf | C | timing | 2.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
 | raf_off_vsync | C | timing | 1.5 | 0.0 | 0.0 | 0.0 | nunca dispara |
-| single_pressure | D | behaviour | 1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
 | no_movement_delta | D | behaviour | 2.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
 | scroll_orphan | D | behaviour | 0.75 | 0.0 | 0.0 | 0.0 | nunca dispara |
 | no_submovements | D | behaviour | 1.5 | 0.0 | 0.0 | 0.0 | nunca dispara |
-| human_pressure | D | behaviour | -1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
-| untrusted_events | D | behaviour | 3.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
 | constant_dwell | D | behaviour | 1.5 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| single_pressure | D | behaviour | 1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| untrusted_events | D | behaviour | 3.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| human_pressure | D | behaviour | -1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
 | human_curvature | D | behaviour | -1.0 | 0.0968 | 0.0611 | -0.0357 | certo |
-| path_too_straight | D | behaviour | 2.0 | 0.0645 | 0.0 | -0.0645 | invertida |
 | human_submovements | D | behaviour | -1.5 | 0.5161 | 0.3333 | -0.1828 | certo |
-| no_reversals | D | behaviour | 1.5 | 0.2903 | 0.0 | -0.2903 | invertida |
 | human_touch | D | behaviour | -1.0 | 0.4839 | 0.0 | -0.4839 | certo |
 
 ## O Veredito ao Longo da Visita
@@ -240,9 +233,9 @@ Esta é a tabela que as métricas de sessão completa não mostram. O falso posi
 | instante | falso positivo | detecção | decididas pelo modelo |
 |---|---|---|---|
 | 0.5s | 0 | 0.7056 | 0 |
-| 1s | 1 | 0.7056 | 0 |
-| 2s | 1 | 0.7056 | 0 |
-| 5s | 1 | 0.8 | 2 |
+| 1s | 0 | 0.7056 | 0 |
+| 2s | 0 | 0.7056 | 0 |
+| 5s | 0 | 0.8 | 2 |
 | 10s | 1 | 0.8056 | 7 |
 | 20s | 1 | 0.9 | 36 |
 | completa | 0 | 0.9 | 38 |

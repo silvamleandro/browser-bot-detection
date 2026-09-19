@@ -21,6 +21,19 @@
  * stops there. Letting a convincing mouse trajectory subtract from "the WebDriver
  * accessor was deleted" is exactly what an adversary who imitates human motion
  * would want, and the humanised adversary in this repo imitates it well.
+ *
+ * Five behavioural rules were removed after the audit in docs/03-resultados.md
+ * measured them against the collected sessions. `path_too_straight` and
+ * `no_reversals` were calling three real visitors automation in the first
+ * seconds, before there was enough pointer data to contradict them. The other
+ * three moved no verdict, but the page prints the `why` of every rule that
+ * fires, so a humanised bot was reading "the tremor and correction typical of a
+ * human hand" in its own explanation.
+ *
+ * Removed rather than inverted: `b_pm_reversal_rate` does separate the classes
+ * here, but the threshold would come from this one generator's jitter, and 2.5
+ * of the methodology rules out fitting thresholds to the sample. The model reads
+ * that feature already.
  */
 
 const S = (v) => Number.isFinite(v);
@@ -140,9 +153,6 @@ export const RULES = [
   { id: 'no_movement_delta', layer: 'D', group: 'behaviour', w: 2.0,
     why: 'Pointer events carry no movement delta from the operating system',
     test: (f) => S(f.b_pm_movement_zero_ratio) && f.b_pm_movement_zero_ratio > 0.8 },
-  { id: 'path_too_straight', layer: 'D', group: 'behaviour', w: 2.0,
-    why: 'The pointer trajectory is very nearly a perfect straight line',
-    test: (f) => S(f.b_pm_straightness_p50) && f.b_pm_straightness_p50 < 1.02 },
   // People scroll with the wheel, the keyboard, a finger or the scrollbar. A page
   // that moves with no input device present anywhere in the session was scrolled
   // by a script.
@@ -156,9 +166,6 @@ export const RULES = [
   { id: 'no_submovements', layer: 'D', group: 'behaviour', w: 1.5,
     why: 'Movement without micro corrections, missing the instability of human motor control',
     test: (f) => S(f.b_pm_submovement_rate) && f.b_pm_count > 30 && f.b_pm_submovement_rate < 0.02 },
-  { id: 'no_reversals', layer: 'D', group: 'behaviour', w: 1.5,
-    why: 'The pointer never changes direction, showing no tremor and no course correction',
-    test: (f) => S(f.b_pm_reversal_rate) && f.b_pm_count > 30 && f.b_pm_reversal_rate < 0.02 },
   { id: 'constant_dwell', layer: 'D', group: 'behaviour', w: 1.5,
     why: 'Button press duration is constant or zero',
     test: (f) => S(f.b_click_dwell_cv) && f.b_click_count >= 3 && f.b_click_dwell_cv < 0.05 },
@@ -178,12 +185,6 @@ export const RULES = [
   { id: 'human_curvature', layer: 'D', group: 'behaviour', w: -1.0,
     why: 'Curved trajectory with natural deviation from a straight line',
     test: (f) => S(f.b_pm_straightness_p50) && f.b_pm_straightness_p50 > 1.12 },
-  { id: 'human_reversals', layer: 'D', group: 'behaviour', w: -1.5,
-    why: 'Frequent direction reversals, the tremor and correction typical of a human hand',
-    test: (f) => S(f.b_pm_reversal_rate) && f.b_pm_reversal_rate > 0.15 },
-  { id: 'human_typing_rhythm', layer: 'D', group: 'behaviour', w: -1.0,
-    why: 'Irregular typing rhythm, with variation consistent with a person',
-    test: (f) => S(f.b_interkey_cv) && f.b_interkey_cv > 0.5 && f.b_interkey_fast_ratio < 0.2 },
   { id: 'human_pressure', layer: 'D', group: 'behaviour', w: -1.0,
     why: 'Pointer pressure varies across the session',
     test: (f) => S(f.b_pm_pressure_unique) && f.b_pm_pressure_unique > 2 },
@@ -192,10 +193,6 @@ export const RULES = [
   { id: 'human_touch', layer: 'D', group: 'behaviour', w: -1.0,
     why: 'Touch interaction from a physical screen',
     test: (f) => S(f.b_touch_count) && f.b_touch_count >= 2 },
-  { id: 'human_wheel', layer: 'D', group: 'behaviour', w: -1.0,
-    why: 'Wheel events with the irregular deltas a physical device produces',
-    test: (f) => S(f.b_wheel_count) && f.b_wheel_count >= 3
-      && S(f.b_wheel_delta_unique_ratio) && f.b_wheel_delta_unique_ratio > 0.3 },
 ];
 
 /**
