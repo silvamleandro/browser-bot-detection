@@ -101,7 +101,7 @@ da sessão e prioridade dos sinais diretos de automação.
 ## Reproduzir a Análise
 
 ```bash
-node analysis/scripts/extract_features.js --in data/sample   # sem --in, lê data/raw
+node analysis/scripts/extract_features.js --in data/sample
 python -m venv .venv && .venv/bin/pip install -r analysis/requirements.txt jupyter
 .venv/bin/jupyter nbconvert --to notebook --execute --inplace \
   analysis/notebooks/bot_detection_analysis.ipynb
@@ -112,6 +112,17 @@ amostra em `data/sample/` basta para rodar o pipeline. O notebook regenera
 `docs/03-resultados.md` e `web/src/model.json`, então o relatório nunca diverge do
 que foi medido. Rodado sobre a amostra, ele sobrescreve os resultados do conjunto
 completo: não faça commit dessa saída.
+
+Sempre passe `--in`. Apontado para o diretório `data/raw/`, o extrator lê todo
+`.jsonl` que encontrar, e isso inclui a rodada antiga em `localhost` que a
+[seção 2.5](docs/02-metodologia.md) exclui do conjunto final. O conjunto medido
+sai de um arquivo só:
+
+```bash
+node analysis/scripts/extract_features.js --in data/raw/collected.jsonl
+node analysis/scripts/extract_features.js --in data/raw/collected.jsonl \
+  --cuts 500,1000,2000,5000,10000,20000 --out data/features/timeline.csv
+```
 
 ## Estrutura
 
