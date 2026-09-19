@@ -1,0 +1,18 @@
+{
+  "name": "incognia-bot-detection",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Bot vs human detection research case — Incognia technical case",
+  "scripts": {
+    "serve": "node collector/server.js",
+    "test": "node --test tests/*.test.mjs",
+    "extract": "node analysis/scripts/extract_features.js",
+    "harness": "node harness/run-matrix.js"
+  },
+  "dependencies": {
+    "playwright": "^1.63.0",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}
