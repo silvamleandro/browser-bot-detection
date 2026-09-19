@@ -15,10 +15,10 @@ inglês, os rótulos são *Human* e *Bot / Automation*.
 | Solução funcional | a [página publicada](https://silvamleandro.github.io/browser-bot-detection/), ou `node collector/server.js` para rodar local |
 | Documentação da pesquisa e da abordagem | [01-pesquisa.md](docs/01-pesquisa.md) e [03-resultados.md](docs/03-resultados.md); os outros cinco documentos são apêndice |
 
-**Em dois minutos:** abra a página e use-a por uns trinta segundos, mexendo o
-ponteiro, digitando e rolando. O veredito é *Human*. Depois suba o servidor local e
-rode `node harness/smoke.mjs`: a mesma página, aberta pelo Playwright, responde
-*Bot / Automation* e lista o que a denunciou.
+**O caminho mais curto:** abra a página publicada e use-a por uns trinta segundos,
+mexendo o ponteiro, digitando e rolando — o veredito é *Human*. Para ver o outro
+lado, siga a [Execução](#execução) e rode `node harness/smoke.mjs`: a mesma página,
+aberta pelo Playwright, responde *Bot / Automation* e lista o que a denunciou.
 
 ## Abordagem
 
@@ -120,7 +120,7 @@ da sessão e prioridade dos sinais diretos de automação.
 node analysis/scripts/extract_features.js --in data/sample
 node analysis/scripts/extract_features.js --in data/sample \
   --cuts 500,1000,2000,5000,10000,20000 --out data/features/timeline.csv
-python -m venv .venv && .venv/bin/pip install -r analysis/requirements.txt jupyter
+python3 -m venv .venv && .venv/bin/pip install -r analysis/requirements.txt jupyter
 .venv/bin/jupyter nbconvert --to notebook --execute --inplace \
   analysis/notebooks/bot_detection_analysis.ipynb
 ```
@@ -172,9 +172,10 @@ O modelo foi avaliado separadamente nas sessões completas. A primeira versão
 publicada decidia com uma feature só, a média dos saltos de rolagem, o que chamava
 de bot quem rola pelo teclado ou com a roda sem rolagem suave: essa medida descreve
 o passo de rolagem do aparelho, não quem está no controle, e saiu do treino junto com
-as features de caminho de rede. A versão atual usa 19 features, com tempo de pressão
-do clique, reversões do ponteiro e o próprio `navigator.webdriver` no topo, e a
-tabela está em [`03-resultados.md`](docs/03-resultados.md). A página só a consulta
+as features de caminho de rede. A versão atual usa 19 features, 16 delas
+comportamentais, com tempo de pressão do clique, reversões do ponteiro e o próprio
+`navigator.webdriver` no topo, e a tabela está em
+[`03-resultados.md`](docs/03-resultados.md). A página só a consulta
 quando as entradas comportamentais dela existem na sessão; até lá decidem as regras,
 e bots com evasão que ficam parados passam nessa etapa.
 
