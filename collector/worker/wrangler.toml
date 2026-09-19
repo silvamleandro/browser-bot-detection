@@ -1,0 +1,8 @@
+name = "incognia-case-collector"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+# Sessões são gravadas como um JSON por chave no plano gratuito do Workers KV.
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "60111d684272435198d8064c2275a59e"
