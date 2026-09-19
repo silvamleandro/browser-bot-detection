@@ -1,6 +1,6 @@
-# 1. Pesquisa: o que se sabe sobre detectar automação de navegador
+# 1. Pesquisa: O que se Sabe sobre Detectar Automação de Navegador
 
-## 1.1 O problema e o modelo de ameaça
+## 1.1 O Problema e o Modelo de Ameaça
 
 Uma ferramenta de automação é um navegador real controlado por um programa. Ela roda
 o mesmo motor de renderização, o mesmo interpretador de JavaScript e as mesmas APIs
@@ -21,9 +21,9 @@ A última premissa sustenta a solução. Não existe sinal impossível de falsif
 existem sinais cujo custo de falsificação coerente é alto o bastante para deslocar a
 economia do ataque.
 
-## 1.2 O que a literatura mostra
+## 1.2 O que a Literatura Mostra
 
-### Comportamento supera fingerprint
+### Comportamento Supera Fingerprint
 
 FP-Agent (arXiv 2605.01247, 2026) é o primeiro estudo controlado comparando agentes
 de navegação com humanos. Com XGBoost sobre 418 features de fingerprint e 50
@@ -41,7 +41,7 @@ máquina, e a máquina é a mesma. O classificador combinado estabiliza depois d
 de um minuto de observação, e o comportamental sozinho só depois de três, o que leva
 direto ao veredito progressivo da seção 1.4.
 
-### Camadas de sinal e custo de evasão
+### Camadas de Sinal e Custo de Evasão
 
 Uma síntese de fornecedor ([c/side, 2026](https://cside.com/blog/headless-browser-detection))
 organiza os sinais por custo de falsificação, e essa ordenação vira o eixo do projeto:
@@ -56,7 +56,7 @@ organiza os sinais por custo de falsificação, e essa ordenação vira o eixo d
 A ordenação é de fornecedor, não medida. Neste projeto a jornada humanizada, com
 cerca de 200 linhas, passou por todas as regras comportamentais escritas à mão.
 
-### Evasão ingênua troca de sinal, o plugin público apaga
+### Evasão Ingênua Troca de Sinal, o Plugin Público Apaga
 
 A evasão escrita aqui (`harness/evasion.js`) esconde os mesmos sinais que um plugin
 de stealth, sem o cuidado dele. Contra ela as regras de adulteração disparam em 36 de
@@ -81,7 +81,7 @@ Artefatos específicos de ferramenta que os plugins não cobrem continuam valend
 `window.__playwright__binding__`, `__pwInitScripts`, chaves `cdc_` do ChromeDriver em
 `document` e o `toString` do wrapper de `page.exposeFunction()`.
 
-### Biometria comportamental
+### Biometria Comportamental
 
 Acien et al. (BeCAPTCHA-Mouse, 2022) sintetizam trajetórias com modelo neuromotor e
 com GAN, e ainda assim detectam 93% delas com uma única trajetória. Iliou et al.
@@ -95,7 +95,7 @@ Somam-se a lei de Fitts e os submovimentos corretivos, porque a mão ultrapassa 
 e corrige. Esses fatos determinam as features de cinemática e o adversário humanizado
 que as testa.
 
-## 1.3 Taxonomia adotada
+## 1.3 Taxonomia Adotada
 
 As 259 features usam prefixo no nome para que a camada seja recuperável na análise:
 
@@ -106,7 +106,7 @@ As 259 features usam prefixo no nome para que a camada seja recuperável na aná
 | `t_` | Timing e runtime | Cadência de `requestAnimationFrame` e sua dispersão, resolução do relógio, latência do laço de eventos, entradas de paint |
 | `b_` | Comportamento | Cinemática de ponteiro, coerência de eventos (tela contra página, `movementX/Y` contra delta de posição), dinâmica de digitação e rolagem |
 
-## 1.4 Abordagem escolhida
+## 1.4 Abordagem Escolhida
 
 **O veredito é progressivo.** Sinais passivos existem em t≈0 e respondem à exigência
 de classificar "ao ser acessada". Sinais comportamentais chegam ao longo de segundos
@@ -133,7 +133,7 @@ humanizadas passam como humanas. Os experimentos por sofisticação rodaram com 
 sessões de 13 participantes coletadas contra a página publicada; os números estão em
 [`03-resultados.md`](03-resultados.md).
 
-## 1.5 O que JavaScript não alcança
+## 1.5 O que JavaScript Não Alcança
 
 A camada 3, com impressão digital de TLS, parâmetros de HTTP/2 e ordem de cabeçalhos,
 é das mais robustas e é inacessível à página: exige observar a conexão no servidor.

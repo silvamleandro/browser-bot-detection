@@ -1,4 +1,4 @@
-# 5. Publicação e coleta
+# 5. Publicação e Coleta
 
 Notas operacionais. A página entregue funciona sozinha; o coletor existe só para a
 fase de pesquisa.
@@ -16,7 +16,7 @@ na branch `web`.
 O workflow em `.github/workflows/pages.yml`, presente em `dev`, é uma alternativa
 para publicar `web/` via GitHub Actions; não é o fluxo usado pela branch `web` atual.
 
-## Endpoint de coleta
+## Endpoint de Coleta
 
 A página envia para a constante `RESEARCH_ENDPOINT` no topo de `web/src/ui.js`,
 a menos que a URL traga `?endpoint=`; para enviar ao coletor local, use esse
@@ -60,7 +60,7 @@ sem repetir identificadores já baixados. O KV tem consistência eventual: uma n
 gravação pode não aparecer imediatamente em uma leitura de outra região; nesse
 caso, repita a consulta mais tarde.
 
-## Coleta com participantes
+## Coleta com Participantes
 
 O link é `https://<usuario>.github.io/<repo>/?research=1&participant=P01`, com um
 código por pessoa. O modo de pesquisa mostra um painel de consentimento e nada é
@@ -75,7 +75,7 @@ celular, Chrome e Firefox e Safari, alguém que use a página só pelo teclado. 
 abre no celular e quem rola com o teclado são os casos mais valiosos, porque foram
 exatamente eles que a versão anterior da detecção classificava como bot.
 
-## Sessões automatizadas
+## Sessões Automatizadas
 
 Para o dataset de comparação com humanos, gere as sessões de bot contra a **mesma URL
 pública** que as pessoas recebem, para que o caminho de rede não vire proxy do rótulo.
@@ -91,7 +91,7 @@ As configurações `headful` abrem janelas reais na sessão gráfica e roubam fo
 enquanto rodam; leva cerca de meia hora para as cinco. Sem evasão, headless carrega
 sinais de ambiente fáceis de separar; com o plugin de stealth, nem isso.
 
-## Reconstruir tudo
+## Reconstruir Tudo
 
 ```bash
 node analysis/scripts/extract_features.js

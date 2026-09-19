@@ -1,4 +1,4 @@
-# 4. Privacidade, monitoramento e escala
+# 4. Privacidade, Monitoramento e Escala
 
 Notas sobre o que muda entre este case e um sistema em produção.
 
@@ -45,7 +45,7 @@ e devem ser descartadas depois. Em produção, sinais comportamentais brutos sã
 dados sensíveis: o desenho correto é computar features na borda e reter os
 agregados, não as trajetórias.
 
-## 4.2 O que o scoring no servidor acrescentaria
+## 4.2 O que o Scoring no Servidor Acrescentaria
 
 A camada 3 da taxonomia, que reúne JA3/JA4 de TLS, ordenação de frames e parâmetros
 SETTINGS de HTTP/2, ordem de cabeçalhos, é das mais robustas disponíveis e é
@@ -66,7 +66,7 @@ A arquitetura correspondente mantém a coleta no cliente, que é onde os sinais
 comportamentais existem, e move a pontuação para o servidor, com o cliente
 enviando o vetor de features assinado junto à requisição.
 
-## 4.3 Monitoramento e decaimento
+## 4.3 Monitoramento e Decaimento
 
 Um detector de bots é um modelo com adversário adaptativo: ele degrada não porque o
 mundo muda devagar, mas porque alguém está ativamente trabalhando contra ele. O

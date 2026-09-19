@@ -75,7 +75,7 @@ node collector/server.js      # serve web/ em http://localhost:8787
 Qualquer servidor HTTP estático também serve (`python3 -m http.server -d web 8787`);
 `file://` não funciona porque a página usa ES modules.
 
-## Como testar
+## Como Testar
 
 **Como pessoa.** Abra <http://localhost:8787> e use a página por uns 30 segundos:
 mova o ponteiro, digite, clique, role. O esperado é **Human**. Vale testar os casos
@@ -98,7 +98,7 @@ passe o mouse sobre essas janelas: o ponteiro real entra na sessão gravada.
 falsos positivos conhecidos, abertura sem interação, troca para o modelo, reinício
 da sessão e prioridade dos sinais diretos de automação.
 
-## Reproduzir a análise
+## Reproduzir a Análise
 
 ```bash
 node analysis/scripts/extract_features.js --in data/sample   # sem --in, lê data/raw
@@ -125,7 +125,7 @@ docs/                pesquisa, metodologia, resultados, produção
 data/                amostra de sessões e quarentena (dados brutos fora do git)
 ```
 
-## Limites conhecidos
+## Limites Conhecidos
 
 Evasão cuidadosa passa pelas regras. Com a flag
 `--disable-blink-features=AutomationControlled` em headful, ou com o

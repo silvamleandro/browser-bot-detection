@@ -1,6 +1,6 @@
 # 2. Metodologia
 
-## 2.1 Arquitetura de coleta
+## 2.1 Arquitetura de Coleta
 
 A página grava três blocos passivos e um fluxo contínuo de eventos:
 
@@ -21,7 +21,7 @@ exóticas lança exceção em configurações reais o bastante para que um colet
 desprotegido perdesse a sessão inteira por um acesso ruim. Sonda que falha é
 registrada como falha, porque a falha também é informação.
 
-## 2.2 Uma única implementação de features
+## 2.2 Uma Única Implementação de Features
 
 `web/src/features.js` roda nos dois lados: no navegador durante a inferência e sob
 Node ao reconstruir a matriz a partir das sessões gravadas. Isso elimina
@@ -35,7 +35,7 @@ comportamentais e todas as sessões foram repontuadas sem recoletar uma linha. O
 obrigou a recoletar foi outra coisa, a página ter mudado (seção 2.6), porque sessão
 gravada por outra versão da página não é comparável.
 
-## 2.3 Valores ausentes
+## 2.3 Valores Ausentes
 
 Features comportamentais valem `NaN`, nunca zero, quando a sessão não produziu
 interação suficiente. Os limiares são 15 movimentos de ponteiro, 4 teclas e 3
@@ -51,9 +51,9 @@ indicador de ausência. Três features de suficiência (`b_has_pointer`, `b_has_
 `b_has_scroll`, somadas em `b_evidence_score`) deixam o modelo distinguir "parece
 automatizada" de "ainda não me mostrou nada".
 
-## 2.4 Geração do dataset
+## 2.4 Geração do Dataset
 
-### Sessões automatizadas
+### Sessões Automatizadas
 
 Matriz em `harness/run-matrix.js`, com quatro eixos independentes:
 
@@ -77,7 +77,7 @@ modificação e a flag de lançamento sozinha.
 A jornada `idle` é o controle: carrega a página e não faz nada, produzindo o caso em
 que a evidência comportamental está genuinamente ausente.
 
-### Sessões headful e o ponteiro real
+### Sessões Headful e o Ponteiro Real
 
 Em headful a janela é real, e o mouse de quem roda o harness gera eventos genuínos se
 passar por cima dela. A primeira sessão `naive` headful saiu com 399 eventos de
@@ -89,7 +89,7 @@ começar, `idle` com qualquer movimento, e contagem acima do máximo observado e
 headless, onde não existe ponteiro real. Ele tirou 7 das 54 sessões da primeira
 rodada e 1 das 90 da coleta final.
 
-### O adversário humanizado
+### O Adversário Humanizado
 
 `harness/journeys/humanized.js` implementa o modelo motor do alcance humano:
 
@@ -104,7 +104,7 @@ rodada e 1 das 90 da coleta final.
 Um adversário fraco produziria métricas boas e falsas. Este passa por todas as regras
 comportamentais: o que o detecta, quando detecta, é artefato ou marca de adulteração.
 
-## 2.5 Protocolo de avaliação
+## 2.5 Protocolo de Avaliação
 
 **Particionamento agrupado por participante** (`StratifiedGroupKFold`). Sem isso,
 sessões da mesma pessoa caem nos dois lados da divisão e a métrica mede memorização
@@ -144,7 +144,7 @@ publicada; as sessões antigas de `localhost` ficaram fora.
 enviar, o bot é gravado ao fim de um roteiro de duração fixa. Duração, tempo até o
 primeiro evento e contagens brutas ficam fora dos modelos; taxas e razões ficam.
 
-## 2.6 Dois artefatos de medição encontrados no caminho
+## 2.6 Dois Artefatos de Medição Encontrados no Caminho
 
 **A interface contaminando a rolagem.** A primeira versão reconstruía a tabela de
 sinais a cada tick do laço de atualização, deslocando o layout e emitindo eventos de
@@ -164,7 +164,7 @@ a conferir `document.activeElement` e a falhar se o campo não recebeu o texto, 
 regra de rolagem deixou de tratar "sem roda do mouse" como script. As 73 sessões
 antigas foram para `data/quarantine/`.
 
-## 2.7 Como o veredito é decidido, e por que humanos vinham dando "bot"
+## 2.7 Como o Veredito É Decidido, e por que Humanos Vinham Dando "bot"
 
 As regras decidem no início da sessão. `web/src/decision.js` só passa a decisão ao
 modelo quando todas as features comportamentais efetivamente usadas pelas árvores
@@ -208,7 +208,7 @@ aciona todas as regras "parece humano" ao mesmo tempo.
 **Artefato direto não é questão de grau.** `navigator.webdriver` ligado, global de
 framework injetada ou chave `cdc_` no documento põem o veredito no piso de 0,95.
 
-### Os falsos positivos que estavam lá
+### Os Falsos Positivos que Estavam Lá
 
 Cada um destes marcava uma pessoa comum como bot, ou a deixava a um sinal fraco da
 linha. Todos viraram teste em `tests/rules.test.mjs`.

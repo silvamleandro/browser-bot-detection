@@ -1,4 +1,4 @@
-# 6. Revisão de literatura
+# 6. Revisão de Literatura
 
 O que sustenta as decisões técnicas deste projeto. A revisão narrativa da seção
 [1.2](01-pesquisa.md) resume as conclusões; aqui estão os trabalhos que eu li em
@@ -20,7 +20,7 @@ a base motora é de 1985 e o problema de agentes de IA é de 2026.
 navegador), CAPTCHA visual, e detecção puramente em camada de rede sem componente
 de cliente.
 
-## 6.2 Os trabalhos que sustentam decisões aqui
+## 6.2 Os Trabalhos que Sustentam Decisões Aqui
 
 Estes eu li em texto completo, e cada um mudou alguma coisa no projeto.
 
@@ -42,7 +42,7 @@ A taxonomia de quatro camadas por custo de evasão usada em
 2026), não de artigo revisado. Ela organiza bem a prática, mas seus números não têm
 o mesmo peso probatório e não são citados como evidência.
 
-## 6.3 A contradição que vale entender
+## 6.3 A Contradição que Vale Entender
 
 FP-Agent e o trabalho de features mínimas dizem que detecção comportamental
 funciona. Iliou et al. dizem que uma GAN evade detecção por movimento de mouse
@@ -73,7 +73,7 @@ trabalho de features mínimas, que usa um modelo treinado com 14 mil sessões hu
 Mostra que regras escritas à mão sobre a estrutura do fluxo não bastam contra um
 adversário que gera esse fluxo.
 
-## 6.4 Lacunas, e onde este trabalho se situa
+## 6.4 Lacunas, e onde Este Trabalho se Situa
 
 **Injeção de entrada em nível de sistema operacional não é testada por ninguém.**
 `xdotool`, `PyAutoGUI` e APIs de acessibilidade estão explicitamente fora de escopo

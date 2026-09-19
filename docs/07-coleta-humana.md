@@ -1,9 +1,9 @@
-# 7. Coleta com pessoas: o protocolo usado
+# 7. Coleta com Pessoas: O Protocolo Usado
 
 Registro de como as sessões humanas foram obtidas. Os números estão em
 [03-resultados.md](03-resultados.md).
 
-## Antes de convidar
+## Antes de Convidar
 
 A página corrigida foi publicada antes de qualquer convite, e o caminho de coleta
 foi verificado com uma sessão de teste: painel de pesquisa visível, envio aceito pelo
@@ -18,7 +18,7 @@ mesmo filtro descarta sem ambiguidade.
 Cada pessoa recebeu um código neutro e exclusivo, `P01` em diante. Nome, e-mail ou
 telefone nunca entraram na URL.
 
-## O que foi pedido a cada participante
+## O que Foi Pedido a Cada Participante
 
 Duas sessões curtas por aparelho, de 2 a 3 minutos no total:
 
@@ -48,7 +48,7 @@ Três instruções importavam mais que as outras:
 Em caso de falha no envio, o participante usava **Download JSON** e mandava o
 arquivo.
 
-## Regras que valeram na consolidação
+## Regras que Valeram na Consolidação
 
 - Toda sessão coletada assim tem rótulo **human**, independentemente do que a página
   previu. Sessão classificada como bot não é descartada: é justamente o dado que
