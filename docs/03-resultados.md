@@ -178,6 +178,93 @@ Mediana de 20 divisões treino/teste por participante, com a faixa entre parênt
 - Só com evidência comportamental, teste com 9 humanas e 60 bots: ROC AUC **0.824** (0.617 a 0.914), TPR @ 1% FPR **0.000** (0.000 a 0.183)
 - Todas as sessões, teste com 10 humanas e 180 bots: ROC AUC **0.355** (0.237 a 0.643), TPR @ 1% FPR **0.000** (0.000 a 0.233)
 
+## Auditoria do motor de regras
+
+Taxa de disparo de cada uma das 42 regras, por classe, nas sessões completas. Peso positivo acusa automação, negativo defende o visitante; `aponta` compara o sinal da separação com o sinal do peso.
+
+19 regras não disparam em nenhuma sessão deste conjunto: são cobertura para adversários que a matriz não gera, e não contribuem com a detecção medida aqui.
+
+5 apontam para o lado errado nestes dados (`human_reversals`, `human_wheel`, `human_typing_rhythm`, `path_too_straight`, `no_reversals`). O viés heurístico absorve o efeito no veredito, mas o texto que a página mostra para essas regras descreve o contrário do que os dados dizem.
+
+| regra | camada | grupo | peso | em humanos | em bots | separação | aponta |
+|---|---|---|---|---|---|---|---|
+| webdriver | A | hard | 4.0 | 0.0 | 0.5056 | 0.5056 | certo |
+| click_without_approach | D | behaviour | 2.0 | 0.0 | 0.3389 | 0.3389 | certo |
+| scroll_programmatic | D | behaviour | 1.5 | 0.0 | 0.3389 | 0.3389 | certo |
+| human_reversals | D | behaviour | -1.5 | 0.0 | 0.3222 | 0.3222 | invertida |
+| ua_headless | A | hard | 3.5 | 0.0 | 0.3056 | 0.3056 | certo |
+| utc_no_dst | B | env | 0.5 | 0.0 | 0.2611 | 0.2611 | certo |
+| programmatic_fill | D | behaviour | 2.5 | 0.0323 | 0.2722 | 0.24 | certo |
+| webgl_context_mismatch | A | tamper | 2.0 | 0.0 | 0.2 | 0.2 | certo |
+| accessors_patched | A | tamper | 2.0 | 0.0 | 0.2 | 0.2 | certo |
+| webdriver_tampered | A | tamper | 2.5 | 0.0 | 0.2 | 0.2 | certo |
+| natives_patched | A | tamper | 2.0 | 0.0 | 0.2 | 0.2 | certo |
+| no_window_chrome | B | env | 1.5 | 0.129 | 0.3111 | 0.1821 | certo |
+| software_gpu | B | env | 1.5 | 0.129 | 0.3056 | 0.1765 | certo |
+| human_wheel | D | behaviour | -1.0 | 0.1613 | 0.3333 | 0.172 | invertida |
+| perm_mismatch | B | env | 1.5 | 0.0 | 0.1 | 0.1 | certo |
+| chrome_stub | A | tamper | 1.5 | 0.0 | 0.1 | 0.1 | certo |
+| human_typing_rhythm | D | behaviour | -1.0 | 0.129 | 0.1667 | 0.0376 | invertida |
+| screen_client_eq | D | behaviour | 3.0 | 0.0 | 0.0333 | 0.0333 | certo |
+| exposed_binding | A | hard | 4.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| doc_keys | A | hard | 4.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| globals | A | hard | 4.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| pointer_none | B | env | 1.5 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| few_fonts | B | env | 1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| chromium_codecs | B | env | 1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| no_media_stack | B | env | 0.75 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| cdp | A | env | 1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| typed_too_fast | D | behaviour | 2.5 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| ua_incoherent | B | env | 2.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| no_raf | C | timing | 2.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| raf_off_vsync | C | timing | 1.5 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| single_pressure | D | behaviour | 1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| no_movement_delta | D | behaviour | 2.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| scroll_orphan | D | behaviour | 0.75 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| no_submovements | D | behaviour | 1.5 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| human_pressure | D | behaviour | -1.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| untrusted_events | D | behaviour | 3.0 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| constant_dwell | D | behaviour | 1.5 | 0.0 | 0.0 | 0.0 | nunca dispara |
+| human_curvature | D | behaviour | -1.0 | 0.0968 | 0.0611 | -0.0357 | certo |
+| path_too_straight | D | behaviour | 2.0 | 0.0645 | 0.0 | -0.0645 | invertida |
+| human_submovements | D | behaviour | -1.5 | 0.5161 | 0.3333 | -0.1828 | certo |
+| no_reversals | D | behaviour | 1.5 | 0.2903 | 0.0 | -0.2903 | invertida |
+| human_touch | D | behaviour | -1.0 | 0.4839 | 0.0 | -0.4839 | certo |
+
+## O veredito ao longo da visita
+
+Eventos cortados em instantes fixos e reavaliados com a política de `web/src/decision.js`. A pontuação do modelo é fora da amostra: as árvores de cada partição veem só sessões completas de outros participantes.
+
+Esta é a tabela que as métricas de sessão completa não mostram. O falso positivo da sessão completa é zero, mas durante a visita existem falsos positivos transitórios, enquanto a evidência comportamental ainda não chegou.
+
+| instante | falso positivo | detecção | decididas pelo modelo |
+|---|---|---|---|
+| 0.5s | 0 | 0.7056 | 0 |
+| 1s | 1 | 0.7056 | 0 |
+| 2s | 1 | 0.7056 | 0 |
+| 5s | 1 | 0.8 | 2 |
+| 10s | 1 | 0.8056 | 7 |
+| 20s | 1 | 0.9 | 36 |
+| completa | 0 | 0.9 | 38 |
+
+## Curva de aprendizado por participante
+
+AUC em função de quantas pessoas entram no treino, separando por participante: um terço das pessoas e um terço dos bots ficam de fora em cada sorteio. Mediana de 12 sorteios por ponto.
+
+Da metade da curva ao último ponto a AUC mediana move +0.0000, e o máximo já aparece com 5 pessoas: a curva é platô, então o que limita o modelo não é o número de participantes.
+
+| pessoas no treino | sorteios | sessões humanas | auc_mediana | auc_p10 | tpr_mediano |
+|---|---|---|---|---|---|
+| 1 | 12 | 2.0 | 0.9002 | 0.8186 | 0.75 |
+| 2 | 12 | 4.0 | 0.9858 | 0.9057 | 0.925 |
+| 3 | 12 | 6.0 | 0.9983 | 0.9934 | 0.9833 |
+| 4 | 12 | 9.5 | 0.9992 | 0.9 | 0.9917 |
+| 5 | 12 | 12.0 | 1.0 | 0.9472 | 1.0 |
+| 6 | 12 | 14.0 | 1.0 | 0.9953 | 1.0 |
+| 7 | 12 | 16.5 | 1.0 | 0.995 | 1.0 |
+| 8 | 12 | 19.0 | 1.0 | 0.995 | 1.0 |
+| 9 | 12 | 21.0 | 1.0 | 0.9968 | 1.0 |
+
 ## Modelo na página
 
 Decisão desta execução: modelo publicado: TPR @ 1% FPR 0.9889 contra 0.8056 das regras, 13 participantes humanos.
@@ -199,4 +286,4 @@ O modelo exportado decide com 19 features, de 185 disponíveis. A página só o 
 | b_pm_submovement_rate | D (comportamento) | 13 |
 | b_pm_step_min | D (comportamento) | 8 |
 
-A página usa regras no início e passa ao modelo quando as features comportamentais usadas pelas árvores estão disponíveis. Sinais diretos de automação mantêm a decisão das regras. As métricas acima avaliam regras e modelos separadamente em sessões completas; não medem essa transição ao longo da visita. Veja a [política de decisão](02-metodologia.md#27-como-o-veredito-é-decidido-e-por-que-humanos-vinham-dando-bot).
+A página usa regras no início e passa ao modelo quando as features comportamentais usadas pelas árvores estão disponíveis. Sinais diretos de automação mantêm a decisão das regras. As métricas de cada motor avaliam regras e modelos separadamente em sessões completas; a seção sobre o veredito ao longo da visita mede a transição. Veja a [política de decisão](02-metodologia.md#27-como-o-veredito-é-decidido-e-por-que-humanos-vinham-dando-bot).
