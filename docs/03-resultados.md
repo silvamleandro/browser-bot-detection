@@ -38,9 +38,9 @@
 | pw-stealth-headless | humanized | 6 |
 | pw-stealth-headless | idle | 6 |
 | pw-stealth-headless | naive | 6 |
-| nan | natural | 15 |
-| nan | reading | 15 |
-| nan | nan | 1 |
+| — | natural | 15 |
+| — | reading | 15 |
+| — | sem roteiro | 1 |
 
 ## Detecção do Motor de Regras
 
@@ -78,9 +78,9 @@ Motor de regras avaliado separadamente, nas sessões completas e no seu limiar d
 | bot | pw-stealth-headless | humanized | 6 | 0.0 | 0.1693 | 0.1693 |
 | bot | pw-stealth-headless | idle | 6 | 0.0 | 0.1865 | 0.1693 |
 | bot | pw-stealth-headless | naive | 6 | 1.0 | 0.757 | 0.757 |
-| human | nan | natural | 15 | 0.0 | 0.1693 | 0.1693 |
-| human | nan | reading | 15 | 0.0 | 0.1693 | 0.1693 |
-| human | nan | nan | 1 | 0.0 | 0.2872 | 0.2872 |
+| human | — | natural | 15 | 0.0 | 0.1693 | 0.1693 |
+| human | — | reading | 15 | 0.0 | 0.1693 | 0.1693 |
+| human | — | sem roteiro | 1 | 0.0 | 0.2872 | 0.2872 |
 
 ## Testes Distributivos
 
@@ -244,7 +244,7 @@ Esta é a tabela que as métricas de sessão completa não mostram. O falso posi
 
 AUC em função de quantas pessoas entram no treino, separando por participante: um terço das pessoas e um terço dos bots ficam de fora em cada sorteio. Mediana de 12 sorteios por ponto.
 
-Da metade da curva ao último ponto a AUC mediana move +0.0000, e o máximo já aparece com 5 pessoas: a curva é platô, então o que limita o modelo não é o número de participantes.
+Da metade da curva ao último ponto a AUC mediana move +0.0000, e o máximo já aparece com 5 pessoas. A curva satura porque a AUC encosta no teto contra este gerador de bots, e teto não é evidência de que participantes deixem de importar: retendo uma ferramenta inteira do treino, o E2 cai para AUC 0.3889. O que falta a este conjunto é variedade de adversário, e isso nenhuma quantidade de participantes resolve.
 
 | pessoas no treino | sorteios | sessões humanas | auc_mediana | auc_p10 | tpr_mediano |
 |---|---|---|---|---|---|
@@ -260,7 +260,7 @@ Da metade da curva ao último ponto a AUC mediana move +0.0000, e o máximo já 
 
 ## Modelo na Página
 
-Decisão desta execução: modelo publicado: TPR @ 1% FPR 0.9889 contra 0.8056 das regras, 13 participantes humanos.
+Decisão desta execução: modelo publicado: detecção sem nenhum falso positivo entre as 31 sessões humanas, 0.9889 contra 0.8056 das regras, com 13 participantes humanos.
 
 O modelo exportado decide com 19 features, de 185 disponíveis. A página só o usa quando as comportamentais entre elas existem na sessão; até lá, decidem as regras.
 
