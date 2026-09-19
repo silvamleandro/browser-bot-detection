@@ -113,6 +113,15 @@ amostra em `data/sample/` basta para rodar o pipeline. O notebook regenera
 que foi medido. Rodado sobre a amostra, ele sobrescreve os resultados do conjunto
 completo: não faça commit dessa saída.
 
+`data/raw/` pode acumular mais de uma rodada de coleta, e o extrator lê o
+diretório inteiro. Para reconstruir o conjunto medido, aponte para o arquivo:
+
+```bash
+node analysis/scripts/extract_features.js --in data/raw/collected.jsonl
+node analysis/scripts/extract_features.js --in data/raw/collected.jsonl \
+  --cuts 500,1000,2000,5000,10000,20000 --out data/features/timeline.csv
+```
+
 ## Estrutura
 
 ```
