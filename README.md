@@ -102,10 +102,15 @@ da sessão e prioridade dos sinais diretos de automação.
 
 ```bash
 node analysis/scripts/extract_features.js --in data/sample
+node analysis/scripts/extract_features.js --in data/sample \
+  --cuts 500,1000,2000,5000,10000,20000 --out data/features/timeline.csv
 python -m venv .venv && .venv/bin/pip install -r analysis/requirements.txt jupyter
 .venv/bin/jupyter nbconvert --to notebook --execute --inplace \
   analysis/notebooks/bot_detection_analysis.ipynb
 ```
+
+A segunda invocação é o que alimenta a seção sobre o veredito ao longo da visita;
+sem `timeline.csv` o notebook roda igual e essa seção sai vazia.
 
 As sessões brutas (`data/raw/`) não vão para o repositório; num clone limpo, a
 amostra em `data/sample/` basta para rodar o pipeline. O notebook regenera
