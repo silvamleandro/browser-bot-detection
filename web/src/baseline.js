@@ -21,19 +21,6 @@
  * stops there. Letting a convincing mouse trajectory subtract from "the WebDriver
  * accessor was deleted" is exactly what an adversary who imitates human motion
  * would want, and the humanised adversary in this repo imitates it well.
- *
- * Five behavioural rules were removed after the audit in docs/03-resultados.md
- * measured them against the collected sessions. `path_too_straight` and
- * `no_reversals` were calling three real visitors automation in the first
- * seconds, before there was enough pointer data to contradict them. The other
- * three moved no verdict, but the page prints the `why` of every rule that
- * fires, so a humanised bot was reading "the tremor and correction typical of a
- * human hand" in its own explanation.
- *
- * Removed rather than inverted: `b_pm_reversal_rate` does separate the classes
- * here, but the threshold would come from this one generator's jitter, and 2.5
- * of the methodology rules out fitting thresholds to the sample. The model reads
- * that feature already.
  */
 
 const S = (v) => Number.isFinite(v);
