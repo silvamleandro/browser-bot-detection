@@ -35,19 +35,25 @@ test('typing and pointer activity without scroll keep the initial rule assessmen
   assert.equal(result.source, 'rules');
 });
 
-test('observed scroll allows the model to score, and restarting returns to rules', () => {
-  const f = features(scroll);
-  const result = scoreVisit(f, model);
-  assert.equal(result.source, 'model');
-  assert.equal(result.probability, scoreModel(model, f).probability);
-  assert.equal(result.threshold, scoreModel(model, f).threshold);
-  assert.equal(isBot(result), false);
+test('a session with the behaviour the trees need is scored by the model', () => {
+  // A recorded humanized bot: it moves, clicks twice and scrolls with the wheel,
+  // so every behavioural input the model splits on exists.
+  const sessions = fs.readFileSync(new URL('../data/sample/sessions.sample.jsonl', import.meta.url), 'utf8')
+    .split('\n').filter(Boolean).map((line) => JSON.parse(line));
+  const humanized = sessions.filter((s) => s.meta.journey === 'humanized').map(extractFeatures);
+  const scored = humanized.filter((f) => scoreVisit(f, model).source === 'model');
+  assert.ok(scored.length, 'no humanized session had the inputs the model needs');
+  for (const f of scored) {
+    const result = scoreVisit(f, model);
+    assert.equal(result.probability, scoreModel(model, f).probability);
+    assert.equal(isBot(result), true);
+  }
+  // A visit that has just started goes back to the rules.
   assert.equal(scoreVisit(features(), model).source, 'rules');
 });
 
-test('direct automation evidence survives a human-looking model input', () => {
+test('a direct automation artifact keeps the decision with the rules', () => {
   const f = { ...features(scroll), a_webdriver: 1 };
-  assert.equal(isBot(scoreModel(model, f)), false);
   const result = scoreVisit(f, model);
   assert.equal(result.source, 'rules');
   assert.equal(isBot(result), true);
@@ -57,4 +63,19 @@ test('direct automation evidence survives a human-looking model input', () => {
 test('model unavailability leaves the rule detector working', () => {
   assert.equal(isBot(scoreVisit(features())), false);
   assert.equal(isBot(scoreVisit({ a_webdriver: 1 })), true);
+});
+
+test('scrolling with the keyboard is not what decides the verdict', () => {
+  // The first published model split on the mean scroll jump alone, so a space bar
+  // or a mouse wheel without smooth scrolling crossed its threshold and read as bot.
+  const keyboard = [
+    { e: 'kd', t: 2000, c: 'space', rep: 0, mod: 0, tr: 1 },
+    ...Array.from({ length: 9 }, (_, i) => ({ e: 'sc', t: 2016 + i * 16, sy: 70 * i, sx: 0, target: 0, tr: 1 })),
+  ];
+  assert.equal(isBot(scoreVisit(features(keyboard), model)), false);
+  const wheel = Array.from({ length: 8 }, (_, i) => [
+    { e: 'wh', t: 1000 + i * 300, dy: 100, dm: 0, tr: 1 },
+    { e: 'sc', t: 1010 + i * 300, sy: 100 * i, sx: 0, target: 0, tr: 1 },
+  ]).flat();
+  assert.equal(isBot(scoreVisit(features(wheel), model)), false);
 });
