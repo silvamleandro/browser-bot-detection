@@ -44,7 +44,7 @@
 
 ## Detecção do motor de regras
 
-O que a página executa hoje, no limiar de operação. Para sessões `bot` a coluna `taxa` é detecção; para `human`, falso positivo. As regras foram escritas olhando estas mesmas sessões automatizadas, então a taxa dos bots descreve o ajuste, e não uma medida fora da amostra.
+Motor de regras avaliado separadamente, nas sessões completas e no seu limiar de operação. Para sessões `bot` a coluna `taxa` é detecção; para `human`, falso positivo. As regras foram escritas olhando estas mesmas sessões automatizadas, então a taxa dos bots descreve o ajuste, e não uma medida fora da amostra.
 
 | label | config | journey | n | taxa | p_mediana | p_min |
 |---|---|---|---|---|---|---|
@@ -181,3 +181,5 @@ Mediana de 20 divisões treino/teste por participante, com a faixa entre parênt
 ## Modelo na página
 
 Decisão desta execução: modelo publicado: TPR @ 1% FPR 1.0000 contra 0.8056 das regras, 13 participantes humanos.
+
+A página usa regras no início e passa ao modelo quando as features comportamentais usadas pelas árvores estão disponíveis. Sinais diretos de automação mantêm a decisão das regras. As métricas acima avaliam regras e modelos separadamente em sessões completas; não medem essa transição ao longo da visita. Veja a [política de decisão](02-metodologia.md#27-como-o-veredito-é-decidido-e-por-que-humanos-vinham-dando-bot).

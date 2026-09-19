@@ -5,8 +5,8 @@
  * evidence then revises it. The stage pills show which evidence has arrived.
  */
 import { createSession } from './session.js';
-import { scoreBaseline } from './baseline.js';
-import { loadModel, scoreModel } from './infer.js';
+import { loadModel } from './infer.js';
+import { scoreVisit } from './decision.js';
 
 const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -72,7 +72,7 @@ function renderVerdict(result) {
 
   // Neither the rules nor the optional model have probability calibration.
   const score = (p * 100).toFixed(1);
-  const source = model ? `${result.model_kind} model` : 'rules';
+  const source = result.source === 'model' ? `${result.model_kind} model` : 'rules';
   const subText = `Automation risk score: ${score}/100 (${source})`;
   if (subText !== lastSubText) { lastSubText = subText; sub.textContent = subText; }
 
@@ -89,14 +89,17 @@ function renderStages(featureMap) {
 function renderReasons(result) {
   const box = $('reasons');
   const items = result.fired ?? [];
-  const html = !items.length
-    ? '<p class="empty">No automation signals found so far.</p>'
+  const modelNote = result.source === 'model'
+    ? '<p class="empty">The score comes from the trained model. The signals below are separate rule checks.</p>'
+    : '';
+  const html = modelNote + (!items.length
+    ? '<p class="empty">No rule-based automation signals found so far.</p>'
     : items.map((r) => `
     <div class="reason ${r.weight >= 0 ? 'pos' : 'neg'}">
       <span class="tag">${r.layer}</span>
       <span class="txt">${r.why}</span>
       <span class="w">${r.weight > 0 ? '+' : ''}${r.weight.toFixed(1)}</span>
-    </div>`).join('');
+    </div>`).join(''));
   if (html !== lastReasonHTML) {
     lastReasonHTML = html;
     box.innerHTML = html;
@@ -146,16 +149,7 @@ function renderSignals(featureMap) {
 
 function update() {
   const featureMap = session.features();
-  const ruleResult = scoreBaseline(featureMap);
-
-  // The model owns the score when present; the rules keep producing explanations.
-  let result;
-  if (model) {
-    const m = scoreModel(model, featureMap);
-    result = { ...m, fired: ruleResult.fired };
-  } else {
-    result = ruleResult;
-  }
+  const result = scoreVisit(featureMap, model);
 
   renderVerdict(result);
   renderStages(featureMap);
@@ -244,7 +238,7 @@ async function boot() {
   fillScrollbox();
   setupResearchMode();
 
-  model = await loadModel();
+  const modelReady = loadModel();
 
   $('btn').addEventListener('click', update);
   $('field').addEventListener('input', update);
@@ -259,6 +253,8 @@ async function boot() {
   });
 
   update();
+  // Passive rules can answer even while the model is still downloading.
+  modelReady.then((loaded) => { model = loaded; update(); });
   await session.ready;
   update();
   setInterval(update, 500);

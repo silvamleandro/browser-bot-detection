@@ -77,7 +77,7 @@ corrente com a de referência. Um salto isolado costuma ser mudança de versão 
 navegador; um salto correlacionado em várias features da camada A indica ferramenta
 de evasão nova ganhando tração.
 
-**Canário de bots conhecidos.** O harness deste projeto rodando contra produção em
+**Testes periódicos com bots conhecidos.** O harness deste projeto rodando contra produção em
 intervalo fixo, com alerta se o score de uma configuração conhecida cair. Detecta
 degradação sem esperar rótulo, que em fraude chega com semanas de atraso.
 
@@ -100,12 +100,13 @@ acumulados. Há ordenações e buscas entre sequências de eventos, portanto nã
 A página usa o motor de regras ou, quando publicado, o modelo de árvores. Não foram
 medidos latência de inferência ou gargalos em escala de produção. Antes de ampliar
 o volume, seria necessário medir esses custos. Enviar apenas features agregadas,
-como proposto em §4.1, reduziria o transporte; a coleta de pesquisa atual envia
+como proposto na seção 4.1, reduziria o transporte; a coleta de pesquisa atual envia
 eventos brutos para permitir reanálise.
 
-O ponto que mais se paga em produção é o mesmo explorado neste case: **guardar o
-evento bruto, não só a feature**. Quando a definição de uma feature muda, e ela muda
-porque o adversário obriga, poder reconstruir todo o histórico sem recoletar
-é a diferença entre uma iteração de dias e uma de meses. É aqui que processamento
-em batch cabe: reprocessar histórico, juntar sinais de sessão com desfechos
-atrasados, e computar estatísticas de deriva sobre janelas longas.
+Neste case, os eventos brutos permitem recalcular features durante a pesquisa,
+com a retenção limitada descrita na seção de privacidade. Isso não implica guardar
+trajetórias indefinidamente em produção. A proposta para produção é reter os
+agregados necessários à detecção e ao monitoramento; uma coleta de eventos brutos
+para investigação exigiria finalidade e prazo próprios. O processamento em lote
+pode juntar esses agregados aos desfechos atrasados e calcular estatísticas de
+deriva.

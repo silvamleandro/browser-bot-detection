@@ -11,8 +11,8 @@ coletor, sessão presente no armazenamento.
 
 Essa verificação aconteceu antes de o protocolo de códigos existir, então ela ficou
 com o código que o navegador sorteia (`p_mk19vj8e`) e é excluída da análise: o
-notebook só aceita sessões humanas cujo participante casa com `P` seguido de
-dígitos. O certo é reservar um código próprio para esse teste, como `TESTE01`, que o
+notebook só aceita sessões humanas cujo código de participante segue o padrão `P`
+seguido de dígitos. O certo é reservar um código próprio para esse teste, como `TESTE01`, que o
 mesmo filtro descarta sem ambiguidade.
 
 Cada pessoa recebeu um código neutro e exclusivo, `P01` em diante. Nome, e-mail ou

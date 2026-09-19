@@ -16,7 +16,7 @@ adaptativo: *quanto sinal sobra quando o atacante apaga os rastros óbvios?*
   adulteração de API (`a_`), coerência de ambiente (`e_`), cadência de runtime
   (`t_`) e comportamento (`b_`), que cobre ponteiro, digitação e rolagem.
 - **Motor de regras próprio** (`web/src/baseline.js`, 42 regras) produz os reason
-  codes e decide enquanto não houver modelo publicado. O score parte de um viés
+  codes e faz a classificação inicial. O score parte de um viés
   heurístico, 0,17 sem evidência, e evidência de "parece humano" só cancela suspeita
   comportamental, nunca apaga adulteração detectada.
 - **Modelo treinado no veredito** (`web/src/model.json`, gradient boosting exportado
@@ -25,8 +25,12 @@ adaptativo: *quanto sinal sobra quando o atacante apaga os rastros óbvios?*
   30, o alvo de coleta, e foi baixado para 11 por decisão registrada no notebook. Foi
   treinado com 13 pessoas, o que é pouco, e a ressalva está em
   [`03-resultados.md`](docs/03-resultados.md).
-- **Veredito progressivo**: sinais passivos respondem em menos de um segundo, e a
-  evidência comportamental revisa a classificação conforme chega.
+- **Regras no início, modelo com dados disponíveis** (`web/src/decision.js`): as
+  regras decidem enquanto faltam as features comportamentais usadas pelas árvores.
+  No modelo atual, isso significa esperar dados de rolagem. Sinais diretos de
+  automação mantêm a decisão das regras mesmo depois. O score indica qual motor
+  está ativo; os indicadores Passive Signals, Pointer, Typing e Scrolling mostram
+  quais tipos de dados já foram coletados, não uma classificação por categoria.
 - **Adversários em escada**: jornadas ingênua, humanizada e parada, combinadas com
   uma evasão ingênua escrita aqui, com a flag de lançamento sozinha e com o
   `puppeteer-extra-plugin-stealth` público.
@@ -35,8 +39,8 @@ adaptativo: *quanto sinal sobra quando o atacante apaga os rastros óbvios?*
 
 A página não envia dados no modo padrão, e a coleta de pesquisa não guarda hashes nem
 identificadores do aparelho; o único código é o do participante, que vem do link de
-convite (detalhes em
-[`04-producao.md`](docs/04-producao.md) §4.1).
+convite (detalhes na
+[seção de privacidade](docs/04-producao.md#41-privacidade)).
 
 ## Documentação
 
@@ -89,9 +93,9 @@ As configurações `headful` abrem janelas reais. Sem evasão, headless carrega 
 ambiente fáceis de separar; com o plugin de stealth, nem isso. Durante a execução, não
 passe o mouse sobre essas janelas: o ponteiro real entra na sessão gravada.
 
-**Testes do motor de regras.** `npm test`. Cada teste é uma pessoa fazendo algo
-comum que uma versão anterior lia como automação, mais a verificação de que toda
-sessão automatizada gravada sem evasão cuidadosa continua detectada.
+**Testes das regras e da transição para o modelo.** `npm test`. Os testes cobrem
+falsos positivos conhecidos, abertura sem interação, troca para o modelo, reinício
+da sessão e prioridade dos sinais diretos de automação.
 
 ## Reproduzir a análise
 
@@ -127,17 +131,23 @@ Evasão cuidadosa passa pelas regras. Com a flag
 `puppeteer-extra-plugin-stealth`, as sessões paradas e humanizadas recebem das regras
 o mesmo score de quem não produziu evidência nenhuma: nenhuma regra dispara contra
 elas. Só a jornada ingênua, que preenche e clica sem aproximação, continua detectada.
-Nenhuma das 31 sessões de 13 pessoas foi classificada como bot.
+Nas sessões completas, nenhuma das 31 sessões de 13 pessoas foi classificada como
+bot pelas regras. Esse resultado não mede a classificação a cada instante da visita.
 
-O modelo publicado marca essas mesmas sessões de stealth, mas o número não deve ser
-lido como robustez: ele foi medido contra um adversário de um gerador só, e o
-experimento E5, que treina apenas com pessoas, não separa as classes. O que sustenta
-a detecção fora desta amostra continua sendo artefato direto e marca de adulteração. A
-detecção atual se apoia em artefatos diretos e em marcas de adulteração, e as regras
-comportamentais escritas à mão não pegam a jornada humanizada. Números por
-configuração em [`03-resultados.md`](docs/03-resultados.md).
+O modelo foi avaliado separadamente nas sessões completas. Todas as suas 300
+árvores usam apenas `b_scroll_jump_mean`, a média dos saltos de rolagem. Sem esse
+dado, ele retorna score de 99,9/100: por isso a página usa as regras enquanto o
+valor está ausente. Essa proteção corrige o falso positivo por falta de rolagem,
+mas não resolve a dependência do modelo em relação a esse sinal. Bots com evasão
+que permanecem parados podem passar pelas regras nessa etapa.
+
+As métricas do notebook não são métricas da combinação ao longo da visita. O
+modelo foi medido contra bots de um mesmo gerador, e o experimento E5 mostra a
+limitação de generalização. Antes de ampliar seu uso, é necessário validar o treino
+com etapas parciais das sessões e novos participantes. Números por configuração em
+[`03-resultados.md`](docs/03-resultados.md).
 
 Sinais de transporte (TLS, HTTP/2, ordem de cabeçalhos) são invisíveis para
 JavaScript, e injeção de entrada pelo sistema operacional (`xdotool`, `PyAutoGUI`)
-gera eventos genuínos, fora do modelo de ameaça. Ver
-[`01-pesquisa.md`](docs/01-pesquisa.md) §1.5.
+gera eventos genuínos, fora do modelo de ameaça. Veja a seção sobre
+[limitações do JavaScript](docs/01-pesquisa.md#15-o-que-javascript-não-alcança).

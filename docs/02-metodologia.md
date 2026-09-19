@@ -12,7 +12,7 @@ A página grava três blocos passivos e um fluxo contínuo de eventos:
 | Eventos de interação | `web/src/collect/behavior.js` | contínuo |
 
 A ordem importa. O gravador de eventos é acoplado antes de qualquer `await`, porque
-uma ferramenta de automação costuma agir nos primeiros centenas de milissegundos,
+uma ferramenta de automação costuma agir nas primeiras centenas de milissegundos,
 exatamente a janela que se perderia coletando o ambiente primeiro.
 
 A captura de rolagem inclui a página e as caixas internas, com um número por alvo
@@ -30,9 +30,9 @@ reimplementar as features em Python, faz o modelo aprender com uma definição d
 "retidão da trajetória" e pontuar com outra, sutilmente diferente.
 
 Como as sessões são gravadas em eventos brutos, revisar a engenharia de features não
-exige recoletar. Isso já se pagou: a revisão da §2.7 mudou metade das features
+exige recoletar. Isso já se pagou: a revisão da seção 2.7 mudou metade das features
 comportamentais e todas as sessões foram repontuadas sem recoletar uma linha. O que
-obrigou a recoletar foi outra coisa, a página ter mudado (§2.6), porque sessão
+obrigou a recoletar foi outra coisa, a página ter mudado (seção 2.6), porque sessão
 gravada por outra versão da página não é comparável.
 
 ## 2.3 Valores ausentes
@@ -166,9 +166,29 @@ antigas foram para `data/quarantine/`.
 
 ## 2.7 Como o veredito é decidido, e por que humanos vinham dando "bot"
 
-Quando há modelo publicado, ele decide e as regras explicam. Sem modelo, as regras
-decidem. Três decisões do motor de regras merecem explicação, porque as três vieram
-de erro.
+As regras decidem no início da sessão. `web/src/decision.js` só passa a decisão ao
+modelo quando todas as features comportamentais efetivamente usadas pelas árvores
+têm valores finitos. No modelo publicado, a única é `b_scroll_jump_mean`: mover o
+mouse ou digitar não habilita o modelo sem dados de rolagem. Não há espera por um
+tempo fixo nem média entre os scores.
+
+Sinais diretos de automação (grupo `hard`) mantêm a decisão das regras mesmo com
+dados suficientes para o modelo. Se não houver modelo disponível, as regras
+continuam decidindo. Reiniciar a sessão descarta a interação anterior e volta à
+avaliação inicial. O score exibido identifica o motor ativo; quando vem do modelo,
+as regras listadas são verificações separadas, não explicações das árvores.
+
+Essa transição evita o falso positivo do modelo sem rolagem. Ela não demonstra
+generalização: os experimentos do notebook avaliam sessões completas, e o modelo
+ainda precisa de validação com etapas parciais das visitas. As três decisões abaixo
+descrevem o motor de regras.
+
+Uma verificação local reconstruiu as 31 sessões humanas mantendo os sinais passivos
+gravados e cortando os eventos em diferentes instantes. Sem eventos, a combinação
+classificou 0 de 31 como bot, contra 31 de 31 do modelo isolado. Aos 1,5 segundos,
+ainda houve 2 falsos positivos pelas regras; aos 5 e 10 segundos e nas sessões
+completas, nenhum. Essa reconstrução verifica a política de decisão, mas não
+substitui novos testes ao vivo nem garante ausência de falsos positivos.
 
 **Existe um viés, e ele puxa para humano.** A versão anterior somava evidência e
 passava a soma por uma sigmoide: sem nenhum sinal o score era exatamente 0,5, e o

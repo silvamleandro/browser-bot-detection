@@ -86,12 +86,13 @@ real do problema, e fica fora do meu modelo de ameaça pelo mesmo motivo.
 trabalhos que li em texto completo descreve explicitamente impedir que sessões da
 mesma pessoa caiam nos dois lados da divisão treino e teste. Como o efeito desse
 vazamento é sempre melhorar o número reportado, a omissão importa, e é por isso que
-o protocolo daqui parte de `StratifiedGroupKFold` (ver [02-metodologia.md](02-metodologia.md) §2.5).
+o protocolo daqui parte de `StratifiedGroupKFold`, conforme a
+[seção 2.5 da metodologia](02-metodologia.md#25-protocolo-de-avaliação).
 
 **Dados humanos são escassos e específicos de tarefa.** 56 participantes no
 FP-Agent, 58 no BeCAPTCHA-Mouse. O trabalho de features mínimas usa humanos
-resolvendo CAPTCHA, tarefa em que praticamente todo mundo usa a roda do mouse, e o
-que, como se vê em §2.7 da metodologia, faz "ausência de roda" parecer um sinal mais
+resolvendo CAPTCHA, tarefa em que praticamente todo mundo usa a roda do mouse, o
+que, como se vê na seção 2.7 da metodologia, faz "ausência de roda" parecer um sinal mais
 forte do que ele é fora daquele contexto.
 
 **Onde meu adversário se situa.** Acima do nível 2 da escada do trabalho de

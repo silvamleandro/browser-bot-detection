@@ -39,7 +39,7 @@ O que interessa é a explicação, não o número: agentes distintos compartilha
 fingerprints idênticos quando rodavam no mesmo sistema. O fingerprint descreve a
 máquina, e a máquina é a mesma. O classificador combinado estabiliza depois de cerca
 de um minuto de observação, e o comportamental sozinho só depois de três, o que leva
-direto ao veredito progressivo da §1.4.
+direto ao veredito progressivo da seção 1.4.
 
 ### Camadas de sinal e custo de evasão
 
@@ -86,8 +86,8 @@ Artefatos específicos de ferramenta que os plugins não cobrem continuam valend
 Acien et al. (BeCAPTCHA-Mouse, 2022) sintetizam trajetórias com modelo neuromotor e
 com GAN, e ainda assim detectam 93% delas com uma única trajetória. Iliou et al.
 (2021) mostram o contrário quando o detector olha só para a forma do traçado. A
-reconciliação está em [06-revisao-literatura.md](06-revisao-literatura.md) §6.3 e é
-ela que define quais features o projeto usa.
+reconciliação está na [seção 6.3 da revisão de literatura](06-revisao-literatura.md#63-a-contradição-que-vale-entender)
+e orienta a escolha das features do projeto.
 
 O fundamento motor vem de Flash & Hogan (1985): alcance humano minimiza o *jerk* e
 produz velocidade em sino, com aceleração, pico no meio e desaceleração no alvo.
@@ -111,11 +111,17 @@ As 259 features usam prefixo no nome para que a camada seja recuperável na aná
 **O veredito é progressivo.** Sinais passivos existem em t≈0 e respondem à exigência
 de classificar "ao ser acessada". Sinais comportamentais chegam ao longo de segundos
 e revisam o veredito. A interface mostra qual evidência já chegou, para que um
-veredito dado só com sinais passivos seja lido como tal.
+veredito dado só com sinais passivos seja lido como tal. As regras fazem a avaliação
+inicial. O modelo passa a decidir quando suas entradas comportamentais estão
+disponíveis, exceto quando há um sinal direto de automação, que mantém a decisão
+das regras. No modelo atual, a entrada necessária é a média dos saltos de rolagem.
 
 **Ausência de interação é ausência de informação.** Um bot que carrega a página e não
 faz nada não gera evidência comportamental, mas uma pessoa que só lê também não.
 Features comportamentais valem `NaN` até haver evidência suficiente, nunca zero.
+O modelo treinado, porém, aprendeu a associar a ausência de rolagem a bot. A política
+de decisão da página impede seu uso nessa situação e mantém as regras. Essa
+proteção não substitui uma avaliação futura do modelo em sessões parciais.
 
 **O adversário de teste implementa o modelo motor humano.** A jornada humanizada usa
 trajetória de jerk mínimo com curvatura, ruído por passo, overshoot com submovimento
