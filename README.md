@@ -6,6 +6,20 @@ inglês, os rótulos são *Human* e *Bot / Automation*.
 
 **Página no ar:** <https://silvamleandro.github.io/browser-bot-detection/>
 
+## O que o Enunciado Pede, e Onde Está
+
+| Item da entrega | Onde |
+|---|---|
+| Código-fonte | `web/` é a solução inteira; o resto do repositório é como ela foi construída e medida |
+| Instruções para executar e testar | [Execução](#execução) e [Como Testar](#como-testar), abaixo |
+| Solução funcional | a [página publicada](https://silvamleandro.github.io/browser-bot-detection/), ou `node collector/server.js` para rodar local |
+| Documentação da pesquisa e da abordagem | [01-pesquisa.md](docs/01-pesquisa.md) e [03-resultados.md](docs/03-resultados.md); os outros cinco documentos são apêndice |
+
+**Em dois minutos:** abra a página e use-a por uns trinta segundos, mexendo o
+ponteiro, digitando e rolando. O veredito é *Human*. Depois suba o servidor local e
+rode `node harness/smoke.mjs`: a mesma página, aberta pelo Playwright, responde
+*Bot / Automation* e lista o que a denunciou.
+
 ## Abordagem
 
 Checar `navigator.webdriver` atende ao enunciado, mas não sobrevive ao primeiro
@@ -20,10 +34,12 @@ adaptativo: *quanto sinal sobra quando o atacante apaga os rastros óbvios?*
   heurístico, 0,17 sem evidência, e evidência de "parece humano" só cancela suspeita
   comportamental, nunca apaga adulteração detectada.
 - **Modelo treinado no veredito** (`web/src/model.json`, gradient boosting exportado
-  como JSON e avaliado por `web/src/infer.js`). Ele só é publicado quando supera as
-  regras em TPR @ 1% FPR fora da amostra e há participantes suficientes: o mínimo era
-  30, o alvo de coleta, e foi baixado para 11 por decisão registrada no notebook. Foi
-  treinado com 13 pessoas, o que é pouco, e a ressalva está em
+  como JSON e avaliado por `web/src/infer.js`). Ele só é publicado quando detecta mais
+  que as regras sem nenhum falso positivo fora da amostra, e quando há participantes
+  suficientes: o mínimo era 30, o alvo de coleta, e foi baixado para 11 por decisão
+  registrada no notebook. Com 31 sessões humanas o menor falso positivo acima de zero
+  é 3,2%, então a comparação não resolve nada mais fino que isso. Foi treinado com 13
+  pessoas, o que é pouco, e a ressalva está em
   [`03-resultados.md`](docs/03-resultados.md).
 - **Regras no início, modelo com dados disponíveis** (`web/src/decision.js`): as
   regras decidem enquanto faltam as features comportamentais usadas pelas árvores.
