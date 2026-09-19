@@ -73,15 +73,14 @@ function renderVerdict(result) {
   // Neither the rules nor the optional model have probability calibration.
   const score = (p * 100).toFixed(1);
   const source = result.source === 'model' ? `${result.model_kind} model` : 'rules';
-  // The two engines cut at different points, so the number alone does not say
-  // which side of the line it falls on. The tick on the meter marks the same value.
+  // The rules cut at 50 and the model at its own threshold, so the number alone
+  // does not say which side of the line it falls on. The meter is the rough
+  // picture; this line carries the cut.
   const subText = `Automation risk score: ${score}/100 (${source}, `
     + `bot above ${(threshold * 100).toFixed(1)})`;
   if (subText !== lastSubText) { lastSubText = subText; sub.textContent = subText; }
 
-  const onMeter = (v) => `${Math.min(99, Math.max(1, v * 100))}%`;
-  $('pin').style.left = onMeter(p);
-  $('thr').style.left = onMeter(threshold);
+  $('pin').style.left = `${Math.min(99, Math.max(1, p * 100))}%`;
 }
 
 function renderStages(featureMap) {

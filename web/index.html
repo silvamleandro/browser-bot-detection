@@ -98,13 +98,6 @@
     background: var(--purple-700); box-shadow: 0 0 0 3px var(--panel);
     transition: left .45s cubic-bezier(.4,0,.2,1); left: 50%; transform: translateX(-50%);
   }
-  /* Where the verdict flips. The rules cut at 50, the model at its own threshold,
-     and without this the same pin position would mean opposite verdicts. */
-  .meter .tick {
-    position: absolute; top: -2px; width: 2px; height: 12px;
-    background: var(--panel); opacity: .9;
-    transition: left .45s cubic-bezier(.4,0,.2,1); left: 50%; transform: translateX(-50%);
-  }
   @media (prefers-color-scheme: dark) { .meter .pin { background: #fff; } }
   .meter-labels {
     display: flex; justify-content: space-between; max-width: 480px; margin: 0 auto;
@@ -224,7 +217,7 @@
   <div class="card verdict">
     <p class="label pending" id="label">Analysing</p>
     <p class="sub" id="sub">Collecting environment signals</p>
-    <div class="meter"><div class="tick" id="thr"></div><div class="pin" id="pin"></div></div>
+    <div class="meter"><div class="pin" id="pin"></div></div>
     <div class="meter-labels"><span>Human</span><span>Bot / Automation</span></div>
     <div class="stages">
       <span class="stage" id="st-passive">Passive Signals</span>
@@ -296,6 +289,6 @@
   </footer>
 </div>
 
-  <script type="module" src="./src/ui.js?v=20260919-thr"></script>
+  <script type="module" src="./src/ui.js?v=20260919-2"></script>
 </body>
 </html>
