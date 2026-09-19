@@ -113,10 +113,13 @@ A segunda invocação é o que alimenta a seção sobre o veredito ao longo da v
 sem `timeline.csv` o notebook roda igual e essa seção sai vazia.
 
 As sessões brutas (`data/raw/`) não vão para o repositório; num clone limpo, a
-amostra em `data/sample/` basta para rodar o pipeline. O notebook regenera
-`docs/03-resultados.md` e `web/src/model.json`, então o relatório nunca diverge do
-que foi medido. Rodado sobre a amostra, ele sobrescreve os resultados do conjunto
-completo: não faça commit dessa saída.
+amostra em `data/sample/` basta para rodar o pipeline de ponta a ponta. Ela é só
+automatizada, uma sessão por configuração: as humanas ficam de fora porque o
+consentimento foi para a pesquisa, não para a publicação. Sem as duas classes o
+notebook não treina modelo, e as tabelas de resultado saem vazias. O notebook
+regenera `docs/03-resultados.md` e `web/src/model.json`, então o relatório nunca
+diverge do que foi medido. Rodado sobre a amostra, ele sobrescreve os resultados do
+conjunto completo: não faça commit dessa saída.
 
 `data/raw/` pode acumular mais de uma rodada de coleta, e o extrator lê o
 diretório inteiro. Para reconstruir o conjunto medido, aponte para o arquivo:
