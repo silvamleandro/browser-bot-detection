@@ -113,17 +113,6 @@ amostra em `data/sample/` basta para rodar o pipeline. O notebook regenera
 que foi medido. Rodado sobre a amostra, ele sobrescreve os resultados do conjunto
 completo: não faça commit dessa saída.
 
-Sempre passe `--in`. Apontado para o diretório `data/raw/`, o extrator lê todo
-`.jsonl` que encontrar, e isso inclui a rodada antiga em `localhost` que a
-[seção 2.5](docs/02-metodologia.md) exclui do conjunto final. O conjunto medido
-sai de um arquivo só:
-
-```bash
-node analysis/scripts/extract_features.js --in data/raw/collected.jsonl
-node analysis/scripts/extract_features.js --in data/raw/collected.jsonl \
-  --cuts 500,1000,2000,5000,10000,20000 --out data/features/timeline.csv
-```
-
 ## Estrutura
 
 ```
