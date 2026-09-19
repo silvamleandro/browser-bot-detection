@@ -27,7 +27,8 @@ adaptativo: *quanto sinal sobra quando o atacante apaga os rastros óbvios?*
   [`03-resultados.md`](docs/03-resultados.md).
 - **Regras no início, modelo com dados disponíveis** (`web/src/decision.js`): as
   regras decidem enquanto faltam as features comportamentais usadas pelas árvores.
-  No modelo atual, isso significa esperar dados de rolagem. Sinais diretos de
+  No modelo atual são 16, então a visita precisa de ponteiro, cliques e rolagem
+  para o modelo responder; celular e teclado puro ficam nas regras. Sinais diretos de
   automação mantêm a decisão das regras mesmo depois. O score indica qual motor
   está ativo; os indicadores Passive Signals, Pointer, Typing e Scrolling mostram
   quais tipos de dados já foram coletados, não uma classificação por categoria.

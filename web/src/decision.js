@@ -3,9 +3,13 @@ import { scoreModel } from './infer.js';
 
 const requiredBehaviour = new WeakMap();
 
-// Only features actually used by tree splits matter. Most of the exported
-// feature_names are unused. Waiting for all of them would exclude mobile users
-// and people who read without typing or moving a mouse.
+// Only features the trees actually split on matter; most of the exported
+// feature_names are never read. The published model splits on 16 behavioural
+// ones, spanning pointer motion, click dwell and wheel deltas, so all three have
+// to be present before the gate opens. A phone emits no wheel events and a
+// keyboard-only visit emits no pointer motion, so both stay on the rules for the
+// whole visit. That is the conservative side: the rules are the engine that
+// scored zero false positives on the collected sessions.
 function hasModelEvidence(model, features) {
   if (!requiredBehaviour.has(model)) {
     const names = new Set();
@@ -23,10 +27,12 @@ function hasModelEvidence(model, features) {
 }
 
 /** Live policy; offline scoreModel still measures the model on its own.
- * The current model uses only b_scroll_jump_mean and treats missing scroll as bot.
- * Until that input exists, use rules instead of interpreting missing behaviour.
- * This gate does not establish model generalisation; it prevents the known
- * missing-input false positive. Direct automation artifacts retain precedence.
+ * The trees read a missing behavioural input as bot, which is how the first
+ * published model called every visitor who had not interacted yet automation.
+ * So the model only takes over once the inputs it splits on exist, and until
+ * then the rules decide rather than the model interpreting absence. This gate
+ * does not establish model generalisation; it prevents that known missing-input
+ * false positive. Direct automation artifacts retain precedence.
  */
 export function scoreVisit(features, model = null) {
   const rules = scoreBaseline(features);
