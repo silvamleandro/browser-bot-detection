@@ -168,9 +168,10 @@ antigas foram para `data/quarantine/`.
 
 As regras decidem no início da sessão. `web/src/decision.js` só passa a decisão ao
 modelo quando todas as features comportamentais efetivamente usadas pelas árvores
-têm valores finitos. No modelo publicado, a única é `b_scroll_jump_mean`: mover o
-mouse ou digitar não habilita o modelo sem dados de rolagem. Não há espera por um
-tempo fixo nem média entre os scores.
+têm valores finitos. No modelo publicado são 16, entre tempo de pressão do clique,
+reversões do ponteiro e dispersão da roda, então a visita precisa de ponteiro,
+cliques e rolagem para o modelo responder. Nas sessões gravadas isso acontece em 38
+das 211. Não há espera por tempo fixo nem média entre os scores.
 
 Sinais diretos de automação (grupo `hard`) mantêm a decisão das regras mesmo com
 dados suficientes para o modelo. Se não houver modelo disponível, as regras

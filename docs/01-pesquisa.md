@@ -114,14 +114,15 @@ e revisam o veredito. A interface mostra qual evidência já chegou, para que um
 veredito dado só com sinais passivos seja lido como tal. As regras fazem a avaliação
 inicial. O modelo passa a decidir quando suas entradas comportamentais estão
 disponíveis, exceto quando há um sinal direto de automação, que mantém a decisão
-das regras. No modelo atual, a entrada necessária é a média dos saltos de rolagem.
+das regras. O modelo atual precisa de ponteiro, cliques e rolagem para responder.
 
 **Ausência de interação é ausência de informação.** Um bot que carrega a página e não
 faz nada não gera evidência comportamental, mas uma pessoa que só lê também não.
 Features comportamentais valem `NaN` até haver evidência suficiente, nunca zero.
-O modelo treinado, porém, aprendeu a associar a ausência de rolagem a bot. A política
-de decisão da página impede seu uso nessa situação e mantém as regras. Essa
-proteção não substitui uma avaliação futura do modelo em sessões parciais.
+O modelo treinado, porém, aprende com sessões completas e trata ausência como
+evidência: a primeira versão publicada lia falta de rolagem como bot. A política de
+decisão da página impede seu uso enquanto as entradas não existem, o que não
+substitui avaliá-lo em sessões parciais.
 
 **O adversário de teste implementa o modelo motor humano.** A jornada humanizada usa
 trajetória de jerk mínimo com curvatura, ruído por passo, overshoot com submovimento

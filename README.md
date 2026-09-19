@@ -134,12 +134,15 @@ elas. Só a jornada ingênua, que preenche e clica sem aproximação, continua d
 Nas sessões completas, nenhuma das 31 sessões de 13 pessoas foi classificada como
 bot pelas regras. Esse resultado não mede a classificação a cada instante da visita.
 
-O modelo foi avaliado separadamente nas sessões completas. Todas as suas 300
-árvores usam apenas `b_scroll_jump_mean`, a média dos saltos de rolagem. Sem esse
-dado, ele retorna score de 99,9/100: por isso a página usa as regras enquanto o
-valor está ausente. Essa proteção corrige o falso positivo por falta de rolagem,
-mas não resolve a dependência do modelo em relação a esse sinal. Bots com evasão
-que permanecem parados podem passar pelas regras nessa etapa.
+O modelo foi avaliado separadamente nas sessões completas. A primeira versão
+publicada decidia com uma feature só, a média dos saltos de rolagem, o que chamava
+de bot quem rola pelo teclado ou com a roda sem rolagem suave: essa medida descreve
+o passo de rolagem do aparelho, não quem está no controle, e saiu do treino junto com
+as features de caminho de rede. A versão atual usa 19 features, com tempo de pressão
+do clique, reversões do ponteiro e o próprio `navigator.webdriver` no topo, e a
+tabela está em [`03-resultados.md`](docs/03-resultados.md). A página só a consulta
+quando as entradas comportamentais dela existem na sessão; até lá decidem as regras,
+e bots com evasão que ficam parados passam nessa etapa.
 
 As métricas do notebook não são métricas da combinação ao longo da visita. O
 modelo foi medido contra bots de um mesmo gerador, e o experimento E5 mostra a
