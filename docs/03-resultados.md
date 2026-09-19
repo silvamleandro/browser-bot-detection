@@ -278,5 +278,12 @@ O modelo exportado decide com 19 features, de 185 disponíveis. A página só o 
 | b_click_dwell_p95 | D (comportamento) | 16 |
 | b_pm_submovement_rate | D (comportamento) | 13 |
 | b_pm_step_min | D (comportamento) | 8 |
+| b_wheel_delta_unique_ratio | D (comportamento) | 8 |
+| b_pm_accel_cv | D (comportamento) | 6 |
+| b_pm_speed_p95 | D (comportamento) | 5 |
+| t_loop_lag_mean | C (timing) | 4 |
+| b_wheel_delta_std | D (comportamento) | 4 |
+| b_pm_dt_p95 | D (comportamento) | 3 |
+| b_pm_accel_min | D (comportamento) | 3 |
 
 A página usa regras no início e passa ao modelo quando as features comportamentais usadas pelas árvores estão disponíveis. Sinais diretos de automação mantêm a decisão das regras. As métricas de cada motor avaliam regras e modelos separadamente em sessões completas; a seção sobre o veredito ao longo da visita mede a transição. Veja a [política de decisão](02-metodologia.md#27-como-o-veredito-é-decidido-e-por-que-humanos-vinham-dando-bot).
