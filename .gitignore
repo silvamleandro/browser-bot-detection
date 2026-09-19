@@ -19,3 +19,4 @@ Incognia___Technical_Case_-_Data_Science_-_2026.pdf
 # too large to be worth versioning.
 data/quarantine/pre-2026-09-15-harness-fix.jsonl
 data/quarantine/headful-real-pointer.jsonl
+data/features/*.json
