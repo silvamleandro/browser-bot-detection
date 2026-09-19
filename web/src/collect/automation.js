@@ -110,12 +110,7 @@ function cdpProbe() {
       get() { touched = true; return 'cdp-probe'; },
     });
     // Quietest console method that still serialises.
-    const original = console.debug;
-    try {
-      console.debug(e);
-    } finally {
-      console.debug = original;
-    }
+    console.debug(e);
     return touched;
   });
 }
